@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block stylesheet %}
+<style>
+.public {
+  height: 25px;
+  width: 150px;
+  background-color: #2eb82e;
+}
+.private {
+  height: 25px;
+  width: 150px;
+  background-color: #3A87AD;
+}
+</style>
+{% endblock %}
+
+{% block menu_buttons %}
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Acasa<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'appointments:patients' %}">Vizualizare pacienti</a>
+      </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <h3>Consultatii: {{nr_appointments}}</h3>
+    <div class="container">
+       <div id="calendar"></div>
+        <div class="card" >
+        <div class="card-body">
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'moment.min.js.css' %}"></script>
+    <script src="{% static 'jquery.min.js' %}"></script>
+    <script src="{% static 'jquery-ui.custom.min.js' %}"></script>
+    <script src="{% static 'fullcalendar.min.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#calendar').fullCalendar({
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                header:{
+                    left: 'prev, next today',
+                    center: 'title',
+                    right: 'month, agendaWeek, agendaDay'
+                },
+                events: [
+                    {% for appointment in object_list %}
+                    {
+                        title: "{{ appointment.patient.first_name }} {{ appointment.patient.last_name }}",
+                        start: '{{ appointment.scheduled_datetime|date:"Y-m-d" }}'
+                    },
+                    {% endfor %}
+                ],
+                dayClick: function(date, jsEvent, view) {
+                    var getUrl = window.location;
+                    var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+                    window.location.href = baseUrl + 'medic-appointments/' + date.format();
+                },
+            });
+        });
+    </script>
+{% endblock %}

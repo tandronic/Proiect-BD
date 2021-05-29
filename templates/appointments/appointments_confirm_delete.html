@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{{ form.media }}
+
+{% block menu_buttons %}
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'home' %}">Acasa<span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <form method="post">{% csrf_token %}
+    <p>Doriti sa anulati programea din data "{{ object.scheduled_datetime|date:"d-m-Y H:i"  }}"?</p>
+    <button type="submit" class="btn btn-primary btn-sm">Da</button>
+</form>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{{ form.media }}
+
+{% block menu_buttons %}
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Acasa</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'appointments:patients' %}">Vizualizare pacienti</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <h3>Patient: {{appointments.first.patient.first_name}} {{appointments.first.patient.last_name}}</h3><br>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Descriere</th>
+                <th>Boala</th>
+                <th>Simptome</th>
+                <th>Data programarii</th>
+                <th>Tratament</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in appointments %}
+                <tr>
+                    <td class="align-middle">
+                        {{data.description}}
+                    </td>
+                    <td class="align-middle">
+                        {{data.disease}}
+                    </td>
+                    <td class="align-middle">
+                        {% for symptom in data.symptoms.all %}
+                            {{symptom.name}}<br>
+                        {% endfor %}
+                    </td>
+                    <td class="align-middle">
+                        {{data.scheduled_datetime|date:"d-m-Y H:i" }}
+                    </td>
+                    <td class="align-middle">
+                        {{data.treatment}}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

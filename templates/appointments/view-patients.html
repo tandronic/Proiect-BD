@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block menu_buttons %}
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Acasa</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="{% url 'appointments:patients' %}">Vizualizare pacienti</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <br>
+    <form method="get" action="">
+        <div align="right">
+        <input type="text" name="q" placeholder="Cauta pacient" value="{{ request.GET.q }}"/>
+        <input type="submit" class="btn btn-primary btn-sm" value="Cautare"/>
+        </div>
+    </form>
+    <br>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Nume</th>
+                <th>Email</th>
+                <th>Varsta</th>
+                <th>Numar telefon</th>
+                <th>CNP</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for patient in patients %}
+                <tr>
+                    <td class="align-middle">
+                        <a href="{% url 'appointments:patient-appointments' patient.pk %}">
+                            {% if patient.first_name %}
+                                {{patient.first_name}}
+                            {% else %}
+                                -
+                            {% endif %}
+                            {% if patient.last_name %}
+                                {{patient.last_name}}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </a>
+                    </td>
+                    <td class="align-middle">
+                        <a href="{% url 'appointments:patient-appointments' patient.pk %}">
+                            {{patient.email}}
+                        </a>
+                    </td>
+                    <td class="align-middle">
+                        <a href="{% url 'appointments:patient-appointments' patient.pk %}">
+                            {% if patient.dob %}
+                                {{patient.dob}}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </a>
+                    </td>
+                    <td class="align-middle">
+                        <a href="{% url 'appointments:patient-appointments' patient.pk %}">
+                            {% if patient.phone %}
+                                {{patient.phone}}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </a>
+                    </td>
+                    <td class="align-middle">
+                        <a href="{% url 'appointments:patient-appointments' patient.pk %}">
+                            {{patient.cnp}}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

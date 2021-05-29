@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block menu_buttons %}
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'home' %}">Acasa<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'appointments:create-appointment' %}">Adaugare consultatie</a>
+      </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <small>Consultatii: {{nr_appointments}}</small>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Medic</th>
+                <th>Descriere</th>
+                <th>Boala</th>
+                <th>Simptome</th>
+                <th>Data programarii</th>
+                <th>Anulare programare</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in object_list %}
+                <tr>
+                    <td class="align-middle">
+                        <a href="{% url 'appointments:edit-appointment' data.pk %}">
+                            {% if data.medic.first_name %}
+                                {{data.medic.first_name}}
+                            {% else %}
+                                -
+                            {% endif %}
+                            {% if data.medic.last_name %}
+                                {{data.medic.last_name}}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </a>
+                    </td>
+                    <td class="align-middle">
+                        <a href="{% url 'appointments:edit-appointment' data.pk %}">{{data.description}}</a>
+                    </td>
+                    <td class="align-middle">
+                        <a href="{% url 'appointments:edit-appointment' data.pk %}">{{data.disease}}</a>
+                    </td>
+                    <td class="align-middle">
+                        {% for symptom in data.symptoms.all %}
+                            <a href="{% url 'appointments:edit-appointment' data.pk %}">{{symptom.name}}</a> <br>
+                        {% endfor %}
+                    </td>
+                    <td class="align-middle">
+                        <a href="{% url 'appointments:edit-appointment' data.pk %}">{{data.scheduled_datetime|date:"d-m-Y H:i" }}</a>
+                    </td>
+                    <td class="align-middle">
+                        {% if data.can_be_cancelled == False %}
+                            <a href="{% url 'appointments:delete-appointment' data.pk %}">Anuleaza programare</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

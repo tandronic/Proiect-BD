@@ -1,0 +1,18 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+
+# python
+*.pyc
+*~
+*.coverage
+
+# virtualenv
+/env
+/env2
+/env3
+/htmlcov
+
+local_settings.py
+db.sqlite3
+*.idea
+db.sqlite3
+/staticfiles

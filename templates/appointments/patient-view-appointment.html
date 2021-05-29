@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{{ form.media }}
+
+{% block menu_buttons %}
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Acasa</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'appointments:patients' %}">Vizualizare pacienti</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <h4>Medic: {{ appointment.medic }}</h4>
+    <h4>Boala: {{ appointment.disease }}</h4>
+    <h4>Simptome:
+        {% for symptom in appointment.symptoms.all %}
+            {{symptom.name}}<br>
+
+        {% endfor %}
+    </h4>
+    <h4>Data programarii: {{appointment.scheduled_datetime|date:"d-m-Y H:i" }}</h4>
+    <h4>Tratament: {{appointment.treatment }}</h4>
+{% endblock %}
